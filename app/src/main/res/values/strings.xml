@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">RebirthSimulator</string>
+    <string name="title_home">抽卡</string>
+    <string name="title_dashboard">图鉴</string>
+    <string name="title_notifications">转生</string>
+    <string name="setting">设置</string>
+    <string name="loginout">退出</string>
+    <string name="getone">抽一次</string>
+    <string name="getten">抽十次</string>
+    <string name="watertext">水晶:</string>
+    <string name="cheat">欧皇模式</string>
+    <string name="restart">重置数据</string>
+    <string name="logout">注销</string>
+    <string name="currency1text">转生碎片：</string>
+</resources>

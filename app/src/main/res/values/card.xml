@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="itemcardbox">
+        <item>转生碎片*10</item>;
+        <item>白给！</item>
+    </string-array>
+    <string-array name="normalcardbox">
+        <item>【B】</item>
+        <item>【BBB】</item>
+        <item>【BB】</item>
+    </string-array>
+    <string-array name="speicalcardbox">
+        <item>【A】</item>
+        <item>【AA】</item>
+        <item>【AAA】</item>
+    </string-array>
+    <string-array name="Uppercardbox">
+        <item>【S】</item>
+    </string-array>
+</resources>
