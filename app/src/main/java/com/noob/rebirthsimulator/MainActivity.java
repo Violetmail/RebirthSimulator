@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.setting,menu);
         return true;
     }
-
     @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
