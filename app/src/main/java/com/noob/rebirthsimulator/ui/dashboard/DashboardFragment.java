@@ -13,7 +13,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.noob.rebirthsimulator.databinding.FragmentDashboardBinding;
 
 public class DashboardFragment extends Fragment {
-
     private FragmentDashboardBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,

@@ -12,4 +12,5 @@
     <string name="restart">重置数据</string>
     <string name="logout">注销</string>
     <string name="currency1text">转生碎片：</string>
+    <string name="about">关于</string>
 </resources>

@@ -1,45 +1,19 @@
 package com.noob.rebirthsimulator.ui.home;
 
-import android.widget.Button;
+import android.app.Application;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModel;
+import com.noob.rebirthsimulator.AppData.User;
+import com.noob.rebirthsimulator.UserDao;
 
 public class HomeViewModel extends ViewModel {
-    public SavedStateHandle handle;
 
-    private MutableLiveData<Integer>waternum;
-    public LiveData<Integer> getWaternum() {
-        if (waternum==null){
-            waternum=new MutableLiveData<>();
-            waternum.setValue(30000);
-        }
-        return waternum;
-    }
-    public void setWaternum(int n){
-        waternum.setValue(n);
-    }
-    private final MutableLiveData<String> waternumText=new MutableLiveData<>();
-    public LiveData<String> getwaternumtext() {
-        waternumText.setValue(""+getWaternum().getValue());
-        return waternumText;
-    }
-
-    private MutableLiveData<Integer>drawcounter;
-    public LiveData<Integer> getDrawcounter() {
-        if (drawcounter==null){
-            drawcounter=new MutableLiveData<>();
-            drawcounter.setValue(100);
-        }
-        return drawcounter;
-    }
-    public void setdrawcounter(int n){
-        drawcounter.setValue(n);
-    }
-
-
+//保存碎片的货币
     private MutableLiveData<Integer>fragments;
     public LiveData<Integer> getFragments() {
         if (fragments==null){
@@ -57,15 +31,18 @@ public class HomeViewModel extends ViewModel {
         return fragmentstext;
     }
 
-    private  MutableLiveData<String[]> usercard;
-    public LiveData<String[]> getUsercard() {
-        return usercard;
+    //保存抽卡次数
+    private MutableLiveData<Integer>drawcounter;
+    public LiveData<Integer> getDrawcounter() {
+        if (drawcounter==null){
+            drawcounter=new MutableLiveData<>();
+            drawcounter.setValue(100);
+        }
+        return drawcounter;
     }
-
-    public void setUsercard(String[] cardname) {
-        usercard.setValue(cardname);
+    public void setdrawcounter(int n){
+        drawcounter.setValue(n);
     }
-
 
     private final MutableLiveData<String> mText=new MutableLiveData<>();
     public LiveData<String> getText() {
@@ -74,7 +51,6 @@ public class HomeViewModel extends ViewModel {
     }
 
     public HomeViewModel( ) {
-
 
     }
 

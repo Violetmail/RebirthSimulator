@@ -7,88 +7,6 @@
     tools:context=".ui.home.HomeFragment">
 
     <TextView
-        android:id="@+id/cardresult10"
-        android:layout_width="155dp"
-        android:layout_height="33dp"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/cardresult9"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.739"
-        app:layout_constraintStart_toEndOf="@+id/cardresult9"
-        app:layout_constraintTop_toTopOf="@+id/cardresult9"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/cardresult9"
-        android:layout_width="155dp"
-        android:layout_height="33dp"
-        android:layout_marginTop="244dp"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline4"
-        app:layout_constraintEnd_toEndOf="@+id/cardresult7"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/cardresult7"
-        app:layout_constraintTop_toTopOf="@+id/guideline3"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/cardresult8"
-        android:layout_width="155dp"
-        android:layout_height="33dp"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/cardresult7"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.739"
-        app:layout_constraintStart_toEndOf="@+id/cardresult7"
-        app:layout_constraintTop_toTopOf="@+id/cardresult7"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/cardresult7"
-        android:layout_width="155dp"
-        android:layout_height="33dp"
-        android:layout_marginTop="184dp"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/cardresult1"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/cardresult1"
-        app:layout_constraintTop_toTopOf="@+id/guideline3" />
-
-    <TextView
-        android:id="@+id/cardresult5"
-        android:layout_width="155dp"
-        android:layout_height="33dp"
-        android:layout_marginTop="124dp"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/cardresult1"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/cardresult1"
-        app:layout_constraintTop_toTopOf="@+id/guideline3" />
-
-    <TextView
-        android:id="@+id/cardresult4"
-        android:layout_width="155dp"
-        android:layout_height="33dp"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/cardresult3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.739"
-        app:layout_constraintStart_toEndOf="@+id/cardresult3"
-        app:layout_constraintTop_toTopOf="@+id/cardresult3"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/cardresult3"
-        android:layout_width="155dp"
-        android:layout_height="33dp"
-        android:layout_marginTop="68dp"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/cardresult1"
-        app:layout_constraintHorizontal_bias="0.168"
-        app:layout_constraintStart_toStartOf="@+id/cardresult1"
-        app:layout_constraintTop_toTopOf="@+id/guideline3" />
-
-    <TextView
         android:id="@+id/text_home"
         android:layout_width="412dp"
         android:layout_height="32dp"
@@ -226,41 +144,6 @@
         app:layout_constraintTop_toTopOf="@+id/currency2text" />
 
     <TextView
-        android:id="@+id/cardresult1"
-        android:layout_width="155dp"
-        android:layout_height="33dp"
-        android:layout_marginTop="4dp"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.167"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline3" />
-
-    <TextView
-        android:id="@+id/cardresult2"
-        android:layout_width="155dp"
-        android:layout_height="33dp"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/cardresult1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.739"
-        app:layout_constraintStart_toEndOf="@+id/cardresult1"
-        app:layout_constraintTop_toTopOf="@+id/cardresult1"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/cardresult6"
-        android:layout_width="155dp"
-        android:layout_height="33dp"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/cardresult5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.739"
-        app:layout_constraintStart_toEndOf="@+id/cardresult5"
-        app:layout_constraintTop_toTopOf="@+id/cardresult5"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
         android:id="@+id/cardresult"
         android:layout_width="130dp"
         android:layout_height="50dp"
@@ -278,7 +161,6 @@
         android:ems="10"
         android:inputType="number"
         android:minHeight="48dp"
-        android:text="40000"
         android:textAlignment="center"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/watertext"
