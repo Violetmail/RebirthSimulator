@@ -10,7 +10,12 @@
     <string name="watertext">水晶:</string>
     <string name="cheat">欧皇模式</string>
     <string name="restart">重置数据</string>
-    <string name="logout">注销</string>
+    <string name="delectaccount">删除账号</string>
     <string name="currency1text">转生碎片：</string>
     <string name="about">关于</string>
+    <string name="login">登陆</string>
+    <string name="register">注册</string>
+    <string name="yourname">用户名：</string>
+    <string name="inputyourname">请输入用户名</string>
+    <string name="logout">注销</string>
 </resources>

@@ -6,16 +6,14 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class Draw {
+    //自动配置id
     @PrimaryKey(autoGenerate = true)
-    public int uid;
-
-    @ColumnInfo(name = "drawid")
-    public  int drawid;
-
+    public int drawid;
+    //距离保底次数
     @ColumnInfo(name = "pole")
     public int pole;
-
-    @ColumnInfo(name = "cardname")
-    public int water;
+    //抽到的卡片记录
+    @ColumnInfo(name = "cardhistory")
+    public int cardhistory;
 
 }

@@ -7,18 +7,19 @@ import androidx.room.Query;
 
 import com.noob.rebirthsimulator.AppData.Card;
 import com.noob.rebirthsimulator.AppData.Draw;
+import com.noob.rebirthsimulator.AppData.RebirthText;
 
 import java.util.List;
 
 @Dao
-public interface DrawDao {
-    //获得Draw表内全部信息
-    @Query("SELECT * FROM Draw")
+public interface RebithTextDao {
+    //获得RebithTextDao表内全部信息
+    @Query("SELECT * FROM RebirthText")
     List<Draw> getAll();
-    //插入
+//插入
     @Insert
-    void insertAll(Draw... draws);
+    void insertAll(RebirthText...rebirthText );
 //删除
     @Delete
-    void delete(Draw draw);
+    void delete(RebirthText rebirthText);
 }

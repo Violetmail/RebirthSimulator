@@ -1,6 +1,5 @@
 package com.noob.rebirthsimulator.AppData;
 import android.content.Context;
-import android.widget.EditText;
 
 import androidx.room.Database;
 import androidx.room.Room;
@@ -10,7 +9,7 @@ import com.noob.rebirthsimulator.CardDao;
 import com.noob.rebirthsimulator.DrawDao;
 import com.noob.rebirthsimulator.UserDao;
 
-@Database(entities = {User.class,Card.class,Draw.class}, version = 1)
+@Database(entities = {User.class,Card.class,Draw.class,RebirthText.class},version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     //获得Dao
     public abstract UserDao userDao();

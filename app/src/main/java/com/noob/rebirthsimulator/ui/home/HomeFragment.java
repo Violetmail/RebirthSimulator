@@ -2,6 +2,7 @@ package com.noob.rebirthsimulator.ui.home;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import com.noob.rebirthsimulator.CardDao;
 import com.noob.rebirthsimulator.DrawDao;
 import com.noob.rebirthsimulator.R;
 import com.noob.rebirthsimulator.UserDao;
+import com.noob.rebirthsimulator.UserInformation;
 import com.noob.rebirthsimulator.databinding.FragmentHomeBinding;
 
 import java.util.Objects;
@@ -32,6 +34,9 @@ public class HomeFragment extends Fragment {
     UserDao userDao;
     CardDao cardDao;
     DrawDao drawDao;
+
+    //当前用户名
+    String nowusername;
 
     //临时储存数据
     private SharedPreferences sharedPreferences;
@@ -47,9 +52,6 @@ public class HomeFragment extends Fragment {
                 new ViewModelProvider(this).get(HomeViewModel.class);
 
 
-        sharedPreferences= getActivity().getSharedPreferences("drawcard",MODE_PRIVATE);
-        editor=sharedPreferences.edit();
-
         final TextView textView = binding.textHome;
         final TextView waterview=binding.water;
         final TextView currency1view=binding.currency1;
@@ -60,17 +62,27 @@ public class HomeFragment extends Fragment {
         cardDao=AppDatabase.getInstance(getActivity().getApplicationContext()).cardDao();
         drawDao=AppDatabase.getInstance(getActivity().getApplicationContext()).drawDao();
 
-        //如果没有用户，自动创建一个用户 编号001
-        if (userDao.getall()==null){
+
+        //如果没有用户，自动创建一个用户
+        if (userDao.getAll().isEmpty()){
             User user=new User();
-            user.uid=001;
-            user.username="admin";
+            user.username="Guest";
             user.water=40000;
             user.fragment=0;
+            user.iflogin=true;
             userDao.insertAll(user);
+            nowusername="Guest";
         }
+        //获得登陆用户，如果未登陆，使用第一个用户"Guest"
+        if (userDao.getloginuser(true)==null){
+            userDao.updatelogin(true,"Guest");
+            nowusername="Guest";
+        }
+        else
+            nowusername=userDao.getloginuser(true).username;
+
         //显示水晶数量
-        binding.water.setText(String.valueOf(userDao.getwater(001)));
+        binding.water.setText(String.valueOf(userDao.getwater(nowusername).water));
 
         binding.cheat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -87,12 +99,12 @@ public class HomeFragment extends Fragment {
             public void onClick(View view) {
                 int counter=homeViewModel.getDrawcounter().getValue();
 
-                int water=userDao.getwater(001);
+                int water=userDao.getwater(nowusername).water;
                 int fragments=homeViewModel.getFragments().getValue();
                 String[] card;
                 if (water-280>=0) {
                     //更新水晶
-                    updatewater(001,water-280);
+                    userDao.updatawater(nowusername,water-280);
                     if (counter == 1) {
                         card = getuppercard();
                         binding.cardresult.setText(card[0]);
@@ -114,7 +126,7 @@ public class HomeFragment extends Fragment {
                         binding.cardresult.setTextColor(setquality(card[1]));
                     }
                     homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-                    binding.water.setText(String.valueOf(userDao.getwater(001)));
+                    binding.water.setText(String.valueOf(userDao.getwater(nowusername).water));
                     homeViewModel.getfragmentstext().observe(getViewLifecycleOwner(), currency1view::setText);
                 }
                else {
@@ -131,6 +143,15 @@ public class HomeFragment extends Fragment {
             }
 
         });
+
+//跳转到用户界面
+        binding.userButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(),UserInformation.class));
+            }
+        });
+
 
 
         View root = binding.getRoot();
@@ -211,14 +232,6 @@ private int setquality(String rank){
             break;
     }
     return qualitycolor;
-}
-//更新水晶
-void updatewater(int userid,int water){
-    User user = new User();
-    user.uid = userid;
-    user.water = water;
-    userDao.update(user);
-
 }
 
     @Override
