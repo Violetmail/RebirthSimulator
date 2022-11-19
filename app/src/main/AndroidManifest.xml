@@ -14,18 +14,21 @@
         android:theme="@style/Theme.RebirthSimulator"
         tools:targetApi="31">
         <activity
+            android:name=".UserInformation"
+            android:exported="false"
+            android:label="我的"
+            android:parentActivityName=".MainActivity"/>
+        <activity
             android:name=".setActivity"
             android:exported="false"
             android:label="设置"
-            android:parentActivityName=".MainActivity"/>
-
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

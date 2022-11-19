@@ -1,15 +1,8 @@
 package com.noob.rebirthsimulator.ui.home;
 
-import android.app.Application;
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModel;
-import com.noob.rebirthsimulator.AppData.User;
-import com.noob.rebirthsimulator.UserDao;
 
 public class HomeViewModel extends ViewModel {
 
