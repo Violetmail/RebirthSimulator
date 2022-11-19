@@ -50,8 +50,7 @@ public class HomeFragment extends Fragment {
 
         HomeViewModel homeViewModel =
                 new ViewModelProvider(this).get(HomeViewModel.class);
-
-
+        //定义控件名称
         final TextView textView = binding.textHome;
         final TextView waterview=binding.water;
         final TextView currency1view=binding.currency1;

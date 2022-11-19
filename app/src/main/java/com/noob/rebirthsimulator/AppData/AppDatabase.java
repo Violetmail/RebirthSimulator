@@ -7,6 +7,7 @@ import androidx.room.RoomDatabase;
 
 import com.noob.rebirthsimulator.CardDao;
 import com.noob.rebirthsimulator.DrawDao;
+import com.noob.rebirthsimulator.RebithTextDao;
 import com.noob.rebirthsimulator.UserDao;
 
 @Database(entities = {User.class,Card.class,Draw.class,RebirthText.class},version = 1)
@@ -15,6 +16,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract UserDao userDao();
     public abstract CardDao cardDao();
     public abstract DrawDao drawDao();
+    public abstract RebithTextDao rebithTextDao();
     //singleton(使得只能实例化一个对象)
     private static volatile AppDatabase INSTANCE;
     public static synchronized AppDatabase getInstance(Context context) {
