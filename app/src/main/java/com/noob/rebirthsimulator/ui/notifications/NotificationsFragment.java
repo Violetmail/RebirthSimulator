@@ -28,12 +28,12 @@ public class NotificationsFragment extends Fragment {
         //
         rebithTextDao= AppDatabase.getInstance(getActivity().getApplicationContext()).rebithTextDao();
         //数据库判空，并插入数据
-       /* if (rebithTextDao.getAll().isEmpty()){
+        if (rebithTextDao.getAll().isEmpty()){
             RebirthText rebirthText1=new RebirthText();
             rebirthText1.age=1;
             //TODO
             rebithTextDao.insertAll(rebirthText1);
-        }*/
+        }
         View root = binding.getRoot();
 
         return root;

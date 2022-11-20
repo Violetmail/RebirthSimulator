@@ -20,8 +20,9 @@ public class User {
     //用户碎片数量
     @ColumnInfo(name = "fragment")
     public int fragment;
-    //用户持有卡牌
-
+    //用户保底次数
+    @ColumnInfo(name = "drawcounter")
+    public int drawcounter;
     //用户是否登陆
     @ColumnInfo(name = "iflogin")
     public boolean iflogin;

@@ -6,22 +6,24 @@ import androidx.room.Insert;
 import androidx.room.Query;
 
 import com.noob.rebirthsimulator.AppData.Card;
+import com.noob.rebirthsimulator.AppData.RebirthText;
 import com.noob.rebirthsimulator.AppData.UserCard;
 
 import java.util.List;
 
 @Dao
 public interface UserCardDao {
-    //获得所有数据库内容
+    //获得UserCardtDao表内全部信息
     @Query("SELECT * FROM UserCard")
     List<UserCard> getAll();
-    //用用户名查找卡片，返回卡片信息
-    @Query("SELECT * FROM UserCard WHERE username LIKE :userNAME LIMIT 1")
+    //用名称查找卡片，返回卡片信息
+    @Query("SELECT * FROM UserCard WHERE username IN(:userNAME)")
     List<UserCard> findByName(String userNAME);
-    //插入新卡片
+    //插入
     @Insert
-    void insertAll(Card... cards);
-    //删除卡片
+    void insertAll(UserCard... userCards);
+
+    //删除
     @Delete
-    void delete(Card card);
+    void delete(UserCard userCard);
 }

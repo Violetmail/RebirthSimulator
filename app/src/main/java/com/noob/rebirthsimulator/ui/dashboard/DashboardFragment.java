@@ -28,12 +28,12 @@ public class DashboardFragment extends Fragment {
         //cardDao实例化
         cardDao= AppDatabase.getInstance(getActivity().getApplicationContext()).cardDao();
         //数据库判空，并插入数据
-       /* if (cardDao.getAll().isEmpty()){
+       if (cardDao.getAll().isEmpty()){
             Card card1=new Card();
             card1.cardname="xxx";
             //TODO
             cardDao.insertAll(card1);
-        }*/
+        }
         View root = binding.getRoot();
         return root;
     }
