@@ -10,7 +10,7 @@ import com.noob.rebirthsimulator.RebithTextDao;
 import com.noob.rebirthsimulator.UserCardDao;
 import com.noob.rebirthsimulator.UserDao;
 
-@Database(entities = {User.class,Card.class,UserCard.class,RebirthText.class},version = 1)
+@Database(entities = {User.class,Card.class,UserCard.class,RebirthText.class},version = 1,exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     //获得Dao
     public abstract UserDao userDao();
