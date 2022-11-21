@@ -16,9 +16,15 @@ public interface UserCardDao {
     //获得UserCardtDao表内全部信息
     @Query("SELECT * FROM UserCard")
     List<UserCard> getAll();
-    //用名称查找卡片，返回卡片信息
+
+    //
+    @Query("SELECT cardname FROM UserCard WHERE username IN(:userNAME) ")
+    List<String> getAllcardname(String userNAME);
+
+    //用名称查找卡片，返回用户卡牌对象
     @Query("SELECT * FROM UserCard WHERE username IN(:userNAME)")
     List<UserCard> findByName(String userNAME);
+
     //插入
     @Insert
     void insertAll(UserCard... userCards);

@@ -19,9 +19,11 @@ public interface UserDao {
 //更新用户水晶数
     @Query("UPDATE User SET water=:newwater WHERE username IN (:userNAME)")
     void updatawater(String userNAME,int newwater);
+
 //更新用户保底数
     @Query("UPDATE User SET drawcounter=:newdrawcounter WHERE username IN (:userNAME)")
     void updatadrawcounter(String userNAME,int newdrawcounter);
+
 //更新用户碎片数
     @Query("UPDATE User SET fragment=:newfragment WHERE username IN (:userNAME)")
     void updatafragment(String userNAME,int newfragment);

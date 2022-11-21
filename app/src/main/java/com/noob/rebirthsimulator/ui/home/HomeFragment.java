@@ -16,15 +16,20 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.noob.rebirthsimulator.AppData.Card;
 import com.noob.rebirthsimulator.AppData.User;
+import com.noob.rebirthsimulator.AppData.UserCard;
 import com.noob.rebirthsimulator.CardDao;
 import com.noob.rebirthsimulator.R;
 import com.noob.rebirthsimulator.UserCardDao;
 import com.noob.rebirthsimulator.UserDao;
 import com.noob.rebirthsimulator.UserInformation;
 import com.noob.rebirthsimulator.databinding.FragmentHomeBinding;
+import com.noob.rebirthsimulator.MainActivity;
 
-import java.util.Objects;
+import java.util.List;
+import java.util.Random;
+
 import com.noob.rebirthsimulator.AppData.AppDatabase;
 
 public class HomeFragment extends Fragment {
@@ -42,15 +47,14 @@ public class HomeFragment extends Fragment {
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
 
-//生命周期；creat
+//生命周期；create
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
 
-
+        //viewmodel使用，已经废弃
         HomeViewModel homeViewModel =
                 new ViewModelProvider(this).get(HomeViewModel.class);
-        //viewmodel使用，已经废弃
         final TextView textView = binding.textHome;
         final TextView waterview=binding.water;
         final TextView currency1view=binding.currency1;
@@ -68,6 +72,7 @@ public class HomeFragment extends Fragment {
             user.fragment=0;
             user.iflogin=true;
             user.drawcounter=100;
+            user.giftwater=1;
             userDao.insertAll(user);
             nowusername="Guest";
         }
@@ -85,6 +90,8 @@ public class HomeFragment extends Fragment {
         binding.textHome.setText("再抽取"+userDao.findByName(nowusername).drawcounter+"次，必出xxx！");
         //显示碎片数量
         binding.currency1.setText(String.valueOf(userDao.findByName(nowusername).fragment));
+        //显示水晶券数量
+        binding.currency2.setText(String.valueOf(userDao.findByName(nowusername).giftwater));
 
 //switch按钮响应功能
         binding.cheat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -104,20 +111,21 @@ public class HomeFragment extends Fragment {
                 int counter=userDao.findByName(nowusername).drawcounter;
                 int water=userDao.findByName(nowusername).water;
                 int fragments=userDao.findByName(nowusername).fragment;
-                String[] card;
                 if (water-280>=0) {
+                    //抽一张卡
+                    Card drawing=new Card();
+                    drawing=getAcard(5,25,50,20);
                     //更新水晶
                     userDao.updatawater(nowusername,water-280);
                     if (counter == 1) {
-                        card = getuppercard();
-                        binding.cardresult.setText(card[0]);
-                        binding.cardresult.setTextColor(setquality(card[1]));
+                        drawing=getuppercard();
+                        binding.cardresult.setText(drawing.cardname);
+                        binding.cardresult.setTextColor(drawing.cardStar);
                         //更新保底数
                         userDao.updatadrawcounter(nowusername,100);
                     }
                     else {
-                        card = getonecard();
-                        if (card[1] == "Scard") {
+                        if (drawing.cardStar == 4) {
                             //更新保底数
                             userDao.updatadrawcounter(nowusername,100);
                         }
@@ -125,12 +133,25 @@ public class HomeFragment extends Fragment {
                             //更新保底数
                             userDao.updatadrawcounter(nowusername,counter-1);
                         }
-                        if (Objects.equals(card[0], "转生碎片*10")){
+                        if (drawing.cardname.equals("转生碎片*10")){
                             //更新碎片
                             userDao.updatafragment(nowusername,fragments+10);
                         }
-                        binding.cardresult.setText(card[0]);
-                        binding.cardresult.setTextColor(setquality(card[1]));
+                        //显示抽卡结果
+                        binding.cardresult.setText(drawing.cardname);
+                        binding.cardresult.setTextColor(setquality(drawing.cardStar));
+
+                        //用户卡列表
+                        List<UserCard> usercard=userCardDao.findByName(nowusername);
+                        //抽到的卡加入用户卡
+                        UserCard userCard0 = new UserCard();
+                        userCard0.username = nowusername;
+                        userCard0.cardname = drawing.cardname;
+                        userCard0.cardstar = drawing.cardStar;
+                        if (!usercard.contains(userCard0)) {
+                            userCardDao.insertAll(userCard0);
+                        }
+
                     }
                     //界面显示新值
                     binding.water.setText(String.valueOf(userDao.findByName(nowusername).water));
@@ -148,6 +169,11 @@ public class HomeFragment extends Fragment {
         binding.getten.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //保底数-10
+                int counter=userDao.findByName(nowusername).drawcounter;
+                userDao.updatadrawcounter(nowusername,counter-10);
+                //更新界面
+                binding.textHome.setText("再抽取"+userDao.findByName(nowusername).drawcounter+"次，必出xxx！");
 
             }
 
@@ -166,60 +192,50 @@ public class HomeFragment extends Fragment {
         View root = binding.getRoot();
         return root;
     }
-
-//抽取一次，概率分别为5% 25% 50% 20%,返回卡片数组，卡片名和品质Rank
-private String[] getonecard(){
-    String[] card1 ;
-    String[] card2 ;
-    String[] card3 ;
-    String[] card4;
-    String[] cardtext = new String[2];
-    card1= this.getResources().getStringArray(R.array.itemcardbox);
-    card2= this.getResources().getStringArray(R.array.normalcardbox);
-    card3= this.getResources().getStringArray(R.array.speicalcardbox);
-    card4=this.getResources().getStringArray(R.array.Uppercardbox);
-
-    int x=(int)(Math.random()*100);
-    if (x<=5){
-        int id = (int) (Math.random()*(card4.length));//随机产生一个顶级卡
-        cardtext[0] = card4[id];
-        cardtext[1]="Scard";
-        return cardtext;
-    }
-    else if (x<=30){
-        int id = (int) (Math.random()*(card3.length));//随机产生一个精英卡
-        cardtext[0] = card3[id];
-        cardtext[1]="Acard";
-        return cardtext;
-    }
-    else if (x<=80){
-        int id = (int) (Math.random()*(card2.length));//随机产生一个普通卡
-        cardtext[0] = card2[id];
-        cardtext[1]="Bcard";
-        return cardtext;
-    }
-    else{
-        int id = (int) (Math.random()*(card1.length));//随机产生一个道具
-        cardtext[0] = card1[id];
-        cardtext[1]="Ccard";
-        return cardtext;
+//抽一次卡,概率分别为5% 25% 50% 20%(PS,PA,PB,PC)
+    private Card getAcard(int PS,int PA,int PB,int PC){
+        int x=(int)(Math.random()*100);
+        if (x<=PS){
+            //获得随机数
+            Random randindex=new Random();
+            int index=randindex.nextInt(cardDao.findByStar(4).size());
+            //返回随机的一个卡
+            return cardDao.findByStar(4).get(index);
+        }
+        else if (x<=PS+PA){
+            //获得随机数
+            Random randindex=new Random();
+            int index=randindex.nextInt(cardDao.findByStar(3).size());
+            //返回随机的一个卡
+            return cardDao.findByStar(3).get(index);
+        }
+        else if (x<=PS+PA+PB){
+            //获得随机数
+            Random randindex=new Random();
+            int index=randindex.nextInt(cardDao.findByStar(2).size());
+            //返回随机的一个卡
+            return cardDao.findByStar(2).get(index);
+        }
+        else {
+            //获得随机数
+            Random randindex=new Random();
+            int index=randindex.nextInt(cardDao.findByStar(1).size());
+            //返回随机的一个卡
+            return cardDao.findByStar(1).get(index);
+        }
     }
 
-}
 //强制获得最强卡
-private String[] getuppercard(){
-    String[] card ;
-    String[] cardtext = new String[2];
-    card=this.getResources().getStringArray(R.array.Uppercardbox);
-    int id = (int) (Math.random()*(card.length));//随机产生一个顶级卡
-    cardtext[0] = card[id];
-    cardtext[1]="Scard";
-    return cardtext;
-
+private Card getuppercard(){
+    //获得随机数
+    Random randindex=new Random();
+    int index=randindex.nextInt(cardDao.findByStar(4).size());
+    //返回随机的一个卡名
+    return cardDao.findByStar(4).get(index);
 }
 
 //根据品质rank设置卡片颜色属性
-private int setquality(String rank){
+private int setquality(int rank){
         int[] color=new int[4];
     color[0]= this.getResources().getColor(R.color.black);
     color[1]= this.getResources().getColor(R.color.MediumSpringGreen);
@@ -227,16 +243,16 @@ private int setquality(String rank){
     color[3]= this.getResources().getColor(R.color.Gold);
     int qualitycolor=0;
     switch (rank){
-        case "Scard":
+        case 4:
             qualitycolor= color[3];
             break;
-        case "Acard":
+        case 3:
             qualitycolor= color[2];
             break;
-        case "Bcard":
+        case 2:
             qualitycolor= color[1];
             break;
-        case "Ccard":
+        case 1:
             qualitycolor= color[0];
             break;
     }

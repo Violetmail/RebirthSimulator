@@ -15,13 +15,22 @@ public interface CardDao {
     @Query("SELECT * FROM card")
     List<Card> getAll();
 
+    //
+    @Query("SELECT cardname FROM card")
+    List<String> getAllcardname();
+
+
     //用卡片名称查找卡片，返回卡片信息
-    @Query("SELECT * FROM card WHERE cardname LIKE :cardname LIMIT 1")
+    @Query("SELECT * FROM card WHERE cardname IN(:cardname)")
     Card findByName(String cardname);
+    //返回星级卡组
+    @Query("SELECT * FROM card WHERE cardStar LIKE :star")
+    List<Card> findByStar(int star);
+
     //插入新卡片
     @Insert
     void insertAll(Card... cards);
     //删除卡片
     @Delete
-    void delete(Card card);
+    void delete(List<Card> cards);
 }

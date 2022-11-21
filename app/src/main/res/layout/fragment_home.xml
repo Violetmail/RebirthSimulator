@@ -123,7 +123,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:text="货币2："
+        android:text="水晶券："
         app:layout_constraintStart_toEndOf="@+id/currency1"
         app:layout_constraintTop_toTopOf="@+id/currency1text" />
 

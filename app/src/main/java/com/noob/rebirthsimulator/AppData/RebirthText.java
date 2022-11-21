@@ -9,12 +9,15 @@ public class RebirthText {
     //自动分配id
     @PrimaryKey(autoGenerate = true)
     public int ReTextid;
-    //生内容转
+
+    //内容
     @ColumnInfo(name = "context")
     public  String  context;
+
     //特殊文本
     @ColumnInfo(name = "specialtext")
     public String specialtext;
+
     //年龄
     @ColumnInfo(name = "age")
     public  int age;

@@ -74,6 +74,7 @@ public String getusername(){
                     user.fragment = 0;
                     user.iflogin = false;
                     user.drawcounter=100;
+                    user.giftwater=3;
                     userDao.insertAll(user);
                     Toast.makeText(UserInformation.this, "注册成功！请登陆！",Toast.LENGTH_SHORT).show();
                 }
