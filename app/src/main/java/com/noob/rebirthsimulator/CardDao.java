@@ -14,9 +14,7 @@ public interface CardDao {
     //获得所有数据库内容
     @Query("SELECT * FROM card")
     List<Card> getAll();
-    //用id查找卡片，返回卡片名称列表
-    @Query("SELECT * FROM card WHERE cardid IN (:cardIds)")
-    List<Card> loadAllByIds(int[] cardIds);
+
     //用卡片名称查找卡片，返回卡片信息
     @Query("SELECT * FROM card WHERE cardname LIKE :cardname LIMIT 1")
     Card findByName(String cardname);

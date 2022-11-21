@@ -18,8 +18,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.noob.rebirthsimulator.AppData.User;
 import com.noob.rebirthsimulator.CardDao;
-import com.noob.rebirthsimulator.DrawDao;
 import com.noob.rebirthsimulator.R;
+import com.noob.rebirthsimulator.UserCardDao;
 import com.noob.rebirthsimulator.UserDao;
 import com.noob.rebirthsimulator.UserInformation;
 import com.noob.rebirthsimulator.databinding.FragmentHomeBinding;
@@ -33,16 +33,16 @@ public class HomeFragment extends Fragment {
     //实例一个userDao
     UserDao userDao;
     CardDao cardDao;
-    DrawDao drawDao;
+    UserCardDao userCardDao;
 
     //当前用户名
     String nowusername;
 
-    //临时储存数据
+    //临时储存数据(未使用)
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
 
-//oncreatView
+//生命周期；creat
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
@@ -50,18 +50,15 @@ public class HomeFragment extends Fragment {
 
         HomeViewModel homeViewModel =
                 new ViewModelProvider(this).get(HomeViewModel.class);
-
-
+        //viewmodel使用，已经废弃
         final TextView textView = binding.textHome;
         final TextView waterview=binding.water;
         final TextView currency1view=binding.currency1;
-        //初始化viewmodel
-        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+
         //Dao实例化
         userDao = AppDatabase.getInstance(getActivity().getApplicationContext()).userDao();
         cardDao=AppDatabase.getInstance(getActivity().getApplicationContext()).cardDao();
-        drawDao=AppDatabase.getInstance(getActivity().getApplicationContext()).drawDao();
-
+        userCardDao=AppDatabase.getInstance(getActivity().getApplicationContext()).userCardDao();
 
         //如果没有用户，自动创建一个用户
         if (userDao.getAll().isEmpty()){
@@ -70,6 +67,7 @@ public class HomeFragment extends Fragment {
             user.water=40000;
             user.fragment=0;
             user.iflogin=true;
+            user.drawcounter=100;
             userDao.insertAll(user);
             nowusername="Guest";
         }
@@ -82,8 +80,13 @@ public class HomeFragment extends Fragment {
             nowusername=userDao.getloginuser(true).username;
 
         //显示水晶数量
-        binding.water.setText(String.valueOf(userDao.getwater(nowusername).water));
+        binding.water.setText(String.valueOf(userDao.findByName(nowusername).water));
+        //显示保底文本
+        binding.textHome.setText("再抽取"+userDao.findByName(nowusername).drawcounter+"次，必出xxx！");
+        //显示碎片数量
+        binding.currency1.setText(String.valueOf(userDao.findByName(nowusername).fragment));
 
+//switch按钮响应功能
         binding.cheat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -97,10 +100,10 @@ public class HomeFragment extends Fragment {
         binding.getone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int counter=homeViewModel.getDrawcounter().getValue();
-
-                int water=userDao.getwater(nowusername).water;
-                int fragments=homeViewModel.getFragments().getValue();
+                //引入抽卡保底数，水晶数，和碎片数。
+                int counter=userDao.findByName(nowusername).drawcounter;
+                int water=userDao.findByName(nowusername).water;
+                int fragments=userDao.findByName(nowusername).fragment;
                 String[] card;
                 if (water-280>=0) {
                     //更新水晶
@@ -109,25 +112,31 @@ public class HomeFragment extends Fragment {
                         card = getuppercard();
                         binding.cardresult.setText(card[0]);
                         binding.cardresult.setTextColor(setquality(card[1]));
-                        homeViewModel.setdrawcounter(100);
+                        //更新保底数
+                        userDao.updatadrawcounter(nowusername,100);
                     }
                     else {
                         card = getonecard();
                         if (card[1] == "Scard") {
-                            homeViewModel.setdrawcounter(100);
+                            //更新保底数
+                            userDao.updatadrawcounter(nowusername,100);
                         }
                         else {
-                            homeViewModel.setdrawcounter(counter - 1);
+                            //更新保底数
+                            userDao.updatadrawcounter(nowusername,counter-1);
                         }
                         if (Objects.equals(card[0], "转生碎片*10")){
-                            homeViewModel.setfragments(fragments+10);
+                            //更新碎片
+                            userDao.updatafragment(nowusername,fragments+10);
                         }
                         binding.cardresult.setText(card[0]);
                         binding.cardresult.setTextColor(setquality(card[1]));
                     }
-                    homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-                    binding.water.setText(String.valueOf(userDao.getwater(nowusername).water));
-                    homeViewModel.getfragmentstext().observe(getViewLifecycleOwner(), currency1view::setText);
+                    //界面显示新值
+                    binding.water.setText(String.valueOf(userDao.findByName(nowusername).water));
+                    binding.currency1.setText(String.valueOf(userDao.findByName(nowusername).fragment));
+                    binding.textHome.setText("再抽取"+userDao.findByName(nowusername).drawcounter+"次，必出xxx！");
+
                 }
                else {
                     Toast.makeText(getActivity().getApplicationContext(), "水晶不足，无法抽取！", Toast.LENGTH_SHORT).show();
@@ -237,9 +246,6 @@ private int setquality(String rank){
     @Override
     public void onResume() {
         super.onResume();
-        SharedPreferences prefs= getActivity().getPreferences(MODE_PRIVATE);
-        String username=prefs.getString("username","");
-        String password=prefs.getString("password","");
     }
 
     @Override

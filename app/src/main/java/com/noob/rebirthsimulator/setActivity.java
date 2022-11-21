@@ -22,7 +22,7 @@ public class setActivity extends AppCompatActivity {
         //实例按钮
         Button clearbtn=findViewById(R.id.restart);
         Button deletebtn=findViewById(R.id.deleteaccount);
-
+//清除数据响应按钮
         clearbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -32,6 +32,7 @@ public class setActivity extends AppCompatActivity {
                     user0.water=40000;
                     user0.fragment=0;
                     user0.iflogin=true;
+                    user0.drawcounter=100;
                     userDao.update(user0);
                     Toast.makeText(setActivity.this, "Guest账号重置数据成功！",Toast.LENGTH_SHORT).show();
                 }
@@ -41,12 +42,14 @@ public class setActivity extends AppCompatActivity {
                     clcuser.water=50000;
                     clcuser.fragment=0;
                     clcuser.iflogin=true;
+                    clcuser.drawcounter=100;
                     userDao.update(clcuser);
                     Toast.makeText(setActivity.this, "数据已经重置！",Toast.LENGTH_SHORT).show();
                 }
 
             }
         });
+//删除账号响应按钮
         deletebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

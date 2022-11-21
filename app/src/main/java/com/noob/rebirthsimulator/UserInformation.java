@@ -73,6 +73,7 @@ public String getusername(){
                     user.water = 50000;
                     user.fragment = 0;
                     user.iflogin = false;
+                    user.drawcounter=100;
                     userDao.insertAll(user);
                     Toast.makeText(UserInformation.this, "注册成功！请登陆！",Toast.LENGTH_SHORT).show();
                 }
@@ -95,7 +96,7 @@ public String getusername(){
             }
         });
     }
-
+//下次打开时界面为登陆后界面
     @Override
     protected void onResume() {
         super.onResume();
@@ -113,6 +114,5 @@ public String getusername(){
     @Override
     protected void onPause() {
         super.onPause();
-
     }
 }
