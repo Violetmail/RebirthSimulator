@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
             topcard.cardAp =100;
             topcard.cardPhy = 100;
             topcard.cardUg = 100;
+            topcard.cardvalue=100;
             cardDao.insertAll(topcard);
 
 
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
             card1.cardAp =80;
             card1.cardPhy = 90;
             card1.cardUg = 50;
+            card1.cardvalue=80;
             cardDao.insertAll(card1);
 
             Card card2 = new Card();
@@ -77,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
             card1.cardAp =70;
             card2.cardPhy = 60;
             card2.cardUg = 80;
+            card2.cardvalue=50;
             cardDao.insertAll(card2);
 
             Card card3 = new Card();
@@ -86,18 +89,21 @@ public class MainActivity extends AppCompatActivity {
             card1.cardAp =10;
             card3.cardPhy = 60;
             card3.cardUg = 80;
+            card3.cardvalue=20;
             cardDao.insertAll(card3);
 
             Card card0 = new Card();
             card0.cardname = "转生碎片*10";
             card0.cardStar=1;
             card0.cardvalue=0;
+            card0.cardvalue=10;
             cardDao.insertAll(card0);
 
             Card cardx = new Card();
             cardx.cardname = "白给！";
             cardx.cardStar=1;
             cardx.cardvalue=0;
+            cardx.cardvalue=1;
             cardDao.insertAll(cardx);
         }
     }

@@ -13,15 +13,19 @@ public class setActivity extends AppCompatActivity {
 
     //实例一个Dao
     UserDao userDao;
+    UserCardDao userCardDao;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set);
-
+        //初始化DAO
         userDao = AppDatabase.getInstance(this).userDao();
+        userCardDao=AppDatabase.getInstance(this).userCardDao();
         //实例按钮
         Button clearbtn=findViewById(R.id.restart);
         Button deletebtn=findViewById(R.id.deleteaccount);
+
+        //定义清除抽卡记录函数
 //清除数据响应按钮
         clearbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,6 +38,8 @@ public class setActivity extends AppCompatActivity {
                     user0.iflogin=true;
                     user0.drawcounter=100;
                     userDao.update(user0);
+                    //清除抽卡记录
+                    userCardDao.deletesomeone("Guest");
                     Toast.makeText(setActivity.this, "Guest账号重置数据成功！",Toast.LENGTH_SHORT).show();
                 }
                 else {
@@ -44,6 +50,8 @@ public class setActivity extends AppCompatActivity {
                     clcuser.iflogin=true;
                     clcuser.drawcounter=100;
                     userDao.update(clcuser);
+                    //清除抽卡记录
+                    userCardDao.deletesomeone(clcuser.username);
                     Toast.makeText(setActivity.this, "数据已经重置！",Toast.LENGTH_SHORT).show();
                 }
 
@@ -65,6 +73,9 @@ public class setActivity extends AppCompatActivity {
             }
         });
     }
+    //定义清除抽卡记录函数
+private void clearhistory(String name){
 
+}
 
 }

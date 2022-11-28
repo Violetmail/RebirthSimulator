@@ -5,14 +5,17 @@ import static android.content.Context.MODE_PRIVATE;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -69,7 +72,7 @@ public class HomeFragment extends Fragment {
             User user=new User();
             user.username="Guest";
             user.water=40000;
-            user.fragment=0;
+            user.fragment=100;
             user.iflogin=true;
             user.drawcounter=100;
             user.giftwater=1;
@@ -148,10 +151,11 @@ public class HomeFragment extends Fragment {
                         userCard0.username = nowusername;
                         userCard0.cardname = drawing.cardname;
                         userCard0.cardstar = drawing.cardStar;
-                        if (!usercard.contains(userCard0)) {
+                        userCard0.cardvalue= drawing.cardvalue;
+                        //如果卡不在用户卡表中则插入
+                        if (userCardDao.findByUserAndName(nowusername,userCard0.cardname)==null) {
                             userCardDao.insertAll(userCard0);
                         }
-
                     }
                     //界面显示新值
                     binding.water.setText(String.valueOf(userDao.findByName(nowusername).water));
@@ -160,23 +164,45 @@ public class HomeFragment extends Fragment {
 
                 }
                else {
-                    Toast.makeText(getActivity().getApplicationContext(), "水晶不足，无法抽取！", Toast.LENGTH_SHORT).show();
+                    //抽卡失败,弹出对话框
+                    AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
+                            .setTitle("抽卡")//标题
+                            .setMessage("水晶数量不足，请先获取水晶！")//内容
+                            .setPositiveButton("确认",null)
+                            .create();
+                    alertDialog.getWindow().setGravity(Gravity.CENTER);
+                    alertDialog.getWindow().setType(WindowManager.LayoutParams.FIRST_APPLICATION_WINDOW);
+                    alertDialog.show();
                 }
-
             }
         });
 //十连抽响应按钮
         binding.getten.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //保底数-10
-                int counter=userDao.findByName(nowusername).drawcounter;
-                userDao.updatadrawcounter(nowusername,counter-10);
-                //更新界面
-                binding.textHome.setText("再抽取"+userDao.findByName(nowusername).drawcounter+"次，必出xxx！");
-
+                int counter10=userDao.findByName(nowusername).drawcounter;
+                int water10=userDao.findByName(nowusername).water;
+                if (water10>=2800) {
+                    //相当于点击十次 单抽
+                    for (int i=0;i<10;i++){
+                        binding.getone.callOnClick();
+                    }
+                    //更新界面
+                    binding.textHome.setText("再抽取" + userDao.findByName(nowusername).drawcounter + "次，必出xxx！");
+                    binding.water.setText(String.valueOf(userDao.findByName(nowusername).water));
+                }
+                else {
+                    //抽卡失败,弹出对话框
+                    AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
+                            .setTitle("抽卡")//标题
+                            .setMessage("水晶数量不足，请先获取水晶！")//内容
+                            .setPositiveButton("确认",null)
+                            .create();
+                    alertDialog.getWindow().setGravity(Gravity.CENTER);
+                    alertDialog.getWindow().setType(WindowManager.LayoutParams.FIRST_APPLICATION_WINDOW);
+                    alertDialog.show();
+                }
             }
-
         });
 
 //跳转到用户界面
@@ -187,12 +213,10 @@ public class HomeFragment extends Fragment {
             }
         });
 
-
-
         View root = binding.getRoot();
         return root;
     }
-//抽一次卡,概率分别为5% 25% 50% 20%(PS,PA,PB,PC)
+//抽一次卡,概率分别为 PS,PA,PB,PC
     private Card getAcard(int PS,int PA,int PB,int PC){
         int x=(int)(Math.random()*100);
         if (x<=PS){

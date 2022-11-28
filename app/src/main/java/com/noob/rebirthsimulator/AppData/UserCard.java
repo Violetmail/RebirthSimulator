@@ -22,5 +22,9 @@ public class UserCard {
     @ColumnInfo(name = "cardstar")
     public int cardstar;
 
+    //卡片价值
+    @ColumnInfo(name = "cardvalue")
+    public int cardvalue;
+
 
 }

@@ -15,7 +15,7 @@ public interface CardDao {
     @Query("SELECT * FROM card")
     List<Card> getAll();
 
-    //
+    //获取所有卡片名称
     @Query("SELECT cardname FROM card")
     List<String> getAllcardname();
 

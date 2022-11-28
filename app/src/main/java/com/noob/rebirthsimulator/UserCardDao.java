@@ -17,13 +17,21 @@ public interface UserCardDao {
     @Query("SELECT * FROM UserCard")
     List<UserCard> getAll();
 
-    //
+    //获取所有卡片名
     @Query("SELECT cardname FROM UserCard WHERE username IN(:userNAME) ")
     List<String> getAllcardname(String userNAME);
 
-    //用名称查找卡片，返回用户卡牌对象
+    //用名称查找卡片，返回用户卡牌对象列表
     @Query("SELECT * FROM UserCard WHERE username IN(:userNAME)")
     List<UserCard> findByName(String userNAME);
+
+    //用用户名和名称查找卡片，返回用户卡牌对象
+    @Query("SELECT * FROM UserCard WHERE username IN(:userNAME) AND cardname IN(:cardNAME)")
+    UserCard findByUserAndName(String userNAME,String cardNAME);
+
+    //删某个用户全部记录
+    @Query("DELETE FROM UserCard WHERE username IN(:userNAME)")
+    void deletesomeone(String userNAME);
 
     //插入
     @Insert
