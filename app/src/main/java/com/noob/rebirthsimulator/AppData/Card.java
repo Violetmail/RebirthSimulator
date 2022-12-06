@@ -38,4 +38,9 @@ public class Card {
     @ColumnInfo(name = "cardvalue")
     public int cardvalue;
 
+    //卡片背景
+    @ColumnInfo(name = "cardbackground")
+    public String cardbackground;
+
+
 }

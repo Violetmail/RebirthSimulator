@@ -44,9 +44,7 @@ public class DashboardFragment extends Fragment {
     List<Card> Allcard;
     //用户卡牌列表
     List<UserCard> mydrawedcard;
-
-    //实例化适配器和数据存放数组
-    CardAdapter cardAdapter ;
+    //实例化显示数据的数组
     List<CardData> CardList = new ArrayList<>();
 
     //定义MyViewHoder类
@@ -63,16 +61,12 @@ public class DashboardFragment extends Fragment {
 
     //定义适配器
     class CardAdapter extends RecyclerView.Adapter<MyViewHoder> {
-        //实例Dao
-        CardDao cardDao;
-        UserCardDao userCardDao;
         @NonNull
         @Override
         public MyViewHoder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             //连接定义的card_list布局
             View view = View.inflate(getActivity().getApplicationContext(), R.layout.card_list, null);
             MyViewHoder myViewHoder = new MyViewHoder(view);
-
             return myViewHoder;
         }
 
@@ -92,7 +86,24 @@ public class DashboardFragment extends Fragment {
             String btnname=holder.card_image.getText().toString();
             //如果当前卡片能在usercard表中找到，则变色
             if (userCardDao.findByUserAndName(nowusername,btnname)!=null){
-                holder.card_image.setBackgroundColor(getResources().getColor(R.color.CornflowerBlue));
+                //根据星级设置颜色
+                switch (userCardDao.findByUserAndName(nowusername,btnname).cardstar){
+                    case 5:
+                        holder.card_image.setBackgroundColor(getResources().getColor(R.color.Pink_25dark));
+                        break;
+                    case 4:
+                        holder.card_image.setBackgroundColor(getResources().getColor(R.color.Gold));
+                        break;
+                    case 3:
+                        holder.card_image.setBackgroundColor(getResources().getColor(R.color.purple_500));
+                        break;
+                    case 2:
+                        holder.card_image.setBackgroundColor(getResources().getColor(R.color.CornflowerBlue));
+                        break;
+                    case 1:
+                        holder.card_image.setBackgroundColor(getResources().getColor(R.color.MediumSpringGreen));
+                        break;
+                }
                 holder.card_value.setTextColor(getResources().getColor(R.color.CornflowerBlue));
                 holder.card_value.setText("已拥有");
             }
@@ -165,7 +176,25 @@ public class DashboardFragment extends Fragment {
                                             holder.card_value.setText("已拥有");
                                             holder.card_value.setTextColor(getResources().getColor(R.color.CornflowerBlue));
                                             //改变卡片颜色
-                                            holder.card_image.setBackgroundColor(getResources().getColor(R.color.CornflowerBlue));
+                                            //根据星级设置颜色
+                                            switch (userCardDao.findByUserAndName(nowusername,btnname).cardstar){
+                                                case 5:
+                                                    holder.card_image.setBackgroundColor(getResources().getColor(R.color.Pink_25dark));
+                                                    break;
+                                                case 4:
+                                                    holder.card_image.setBackgroundColor(getResources().getColor(R.color.Gold));
+                                                    break;
+                                                case 3:
+                                                    holder.card_image.setBackgroundColor(getResources().getColor(R.color.purple_500));
+                                                    break;
+                                                case 2:
+                                                    holder.card_image.setBackgroundColor(getResources().getColor(R.color.CornflowerBlue));
+                                                    break;
+                                                case 1:
+                                                    holder.card_image.setBackgroundColor(getResources().getColor(R.color.MediumSpringGreen));
+                                                    break;
+
+                                            }
                                         }
                                     })
                                     //取消按钮
@@ -185,37 +214,35 @@ public class DashboardFragment extends Fragment {
         }
     }
 
+    //实例化适配器
+    CardAdapter cardAdapter ;
+
 
 //Creat生命周期
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         //bingding绑定控件
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
-
         //Dao实例化
         userDao = AppDatabase.getInstance(getActivity().getApplicationContext()).userDao();
         cardDao=AppDatabase.getInstance(getActivity().getApplicationContext()).cardDao();
         userCardDao=AppDatabase.getInstance(getActivity().getApplicationContext()).userCardDao();
         //实例化适配器
         cardAdapter=new CardAdapter();
-
-        //设置recycleview布局
         //绑定适配器
         binding.cardlist.setAdapter(cardAdapter);
-        //3列布局
+
+        ////设置recycleview布局 3列布局
         GridLayoutManager gridLayoutManager = new GridLayoutManager(
                 getActivity().getApplicationContext(), 3, GridLayoutManager.VERTICAL, false);
         gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         binding.cardlist.setLayoutManager(gridLayoutManager);
-
 
         //获得用户名
         nowusername=userDao.getloginuser(true).username;
 
         //显示碎片数
         binding.fragmentstext.setText("碎片："+userDao.findByName(nowusername).fragment);
-
-
 
         //全部按钮功能
         binding.allcard.setOnClickListener(new View.OnClickListener() {

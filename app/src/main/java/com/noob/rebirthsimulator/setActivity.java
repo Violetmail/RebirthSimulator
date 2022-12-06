@@ -34,9 +34,10 @@ public class setActivity extends AppCompatActivity {
                     User user0=userDao.getloginuser(true);
                     user0.username="Guest";
                     user0.water=40000;
-                    user0.fragment=0;
+                    user0.fragment=100;
                     user0.iflogin=true;
                     user0.drawcounter=100;
+                    user0.giftwater=1;
                     userDao.update(user0);
                     //清除抽卡记录
                     userCardDao.deletesomeone("Guest");
@@ -46,9 +47,10 @@ public class setActivity extends AppCompatActivity {
                     User clcuser=userDao.getloginuser(true);
                     clcuser.username=userDao.getloginuser(true).username;
                     clcuser.water=50000;
-                    clcuser.fragment=0;
+                    clcuser.fragment=100;
                     clcuser.iflogin=true;
                     clcuser.drawcounter=100;
+                    clcuser.giftwater=3;
                     userDao.update(clcuser);
                     //清除抽卡记录
                     userCardDao.deletesomeone(clcuser.username);

@@ -2,6 +2,7 @@ package com.noob.rebirthsimulator.ui.home;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -55,13 +56,6 @@ public class HomeFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
 
-        //viewmodel使用，已经废弃
-        HomeViewModel homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
-        final TextView textView = binding.textHome;
-        final TextView waterview=binding.water;
-        final TextView currency1view=binding.currency1;
-
         //Dao实例化
         userDao = AppDatabase.getInstance(getActivity().getApplicationContext()).userDao();
         cardDao=AppDatabase.getInstance(getActivity().getApplicationContext()).cardDao();
@@ -90,7 +84,7 @@ public class HomeFragment extends Fragment {
         //显示水晶数量
         binding.water.setText(String.valueOf(userDao.findByName(nowusername).water));
         //显示保底文本
-        binding.textHome.setText("再抽取"+userDao.findByName(nowusername).drawcounter+"次，必出xxx！");
+        binding.textHome.setText("再抽取"+userDao.findByName(nowusername).drawcounter+"次，必出S!");
         //显示碎片数量
         binding.currency1.setText(String.valueOf(userDao.findByName(nowusername).fragment));
         //显示水晶券数量
@@ -106,6 +100,50 @@ public class HomeFragment extends Fragment {
             }
         });
 
+//加水晶相应按钮
+        binding.addwater.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //获取水晶和水晶券数量
+                int water=userDao.findByName(nowusername).water;
+                int giftwater=userDao.findByName(nowusername).giftwater;
+                if (giftwater>=1) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
+                            .setTitle("水晶券")//标题
+                            .setMessage("确认使用水晶券吗？")//内容
+                            .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    //更新
+                                    User user = userDao.findByName(nowusername);
+                                    user.water = water + 10000;
+                                    user.giftwater = giftwater - 1;
+                                    userDao.update(user);
+                                    //界面更新
+                                    binding.water.setText(String.valueOf(userDao.findByName(nowusername).water));
+                                    binding.currency2.setText(String.valueOf(userDao.findByName(nowusername).giftwater));
+                                }
+                            })
+                            .setNegativeButton("取消",null)
+                            .create();
+                    alertDialog.getWindow().setGravity(Gravity.CENTER);
+                    alertDialog.getWindow().setType(WindowManager.LayoutParams.FIRST_APPLICATION_WINDOW);
+                    alertDialog.show();
+                }
+                else {
+                    //水晶券使用失败,弹出对话框
+                    AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
+                            .setTitle("水晶券")//标题
+                            .setMessage("您还没有水晶券可以使用！")//内容
+                            .setPositiveButton("确认", null)
+                            .create();
+                    alertDialog.getWindow().setGravity(Gravity.CENTER);
+                    alertDialog.getWindow().setType(WindowManager.LayoutParams.FIRST_APPLICATION_WINDOW);
+                    alertDialog.show();
+                }
+            }
+        });
+
  //单抽响应按钮
         binding.getone.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,7 +151,6 @@ public class HomeFragment extends Fragment {
                 //引入抽卡保底数，水晶数，和碎片数。
                 int counter=userDao.findByName(nowusername).drawcounter;
                 int water=userDao.findByName(nowusername).water;
-                int fragments=userDao.findByName(nowusername).fragment;
                 if (water-280>=0) {
                     //抽一张卡
                     Card drawing=new Card();
@@ -136,10 +173,7 @@ public class HomeFragment extends Fragment {
                             //更新保底数
                             userDao.updatadrawcounter(nowusername,counter-1);
                         }
-                        if (drawing.cardname.equals("转生碎片*10")){
-                            //更新碎片
-                            userDao.updatafragment(nowusername,fragments+10);
-                        }
+
                         //显示抽卡结果
                         binding.cardresult.setText(drawing.cardname);
                         binding.cardresult.setTextColor(setquality(drawing.cardStar));
@@ -160,7 +194,7 @@ public class HomeFragment extends Fragment {
                     //界面显示新值
                     binding.water.setText(String.valueOf(userDao.findByName(nowusername).water));
                     binding.currency1.setText(String.valueOf(userDao.findByName(nowusername).fragment));
-                    binding.textHome.setText("再抽取"+userDao.findByName(nowusername).drawcounter+"次，必出xxx！");
+                    binding.textHome.setText("再抽取"+userDao.findByName(nowusername).drawcounter+"次，必出S!");
 
                 }
                else {
@@ -188,7 +222,7 @@ public class HomeFragment extends Fragment {
                         binding.getone.callOnClick();
                     }
                     //更新界面
-                    binding.textHome.setText("再抽取" + userDao.findByName(nowusername).drawcounter + "次，必出xxx！");
+                    binding.textHome.setText("再抽取"+userDao.findByName(nowusername).drawcounter+"次，必出S!");
                     binding.water.setText(String.valueOf(userDao.findByName(nowusername).water));
                 }
                 else {
@@ -286,6 +320,11 @@ private int setquality(int rank){
     @Override
     public void onResume() {
         super.onResume();
+        //显示变动的数据
+        binding.water.setText(String.valueOf(userDao.findByName(nowusername).water));
+        binding.currency1.setText(String.valueOf(userDao.findByName(nowusername).fragment));
+        binding.currency2.setText(String.valueOf(userDao.findByName(nowusername).giftwater));
+        binding.textHome.setText("再抽取"+userDao.findByName(nowusername).drawcounter+"次，必出S!");
     }
 
     @Override
