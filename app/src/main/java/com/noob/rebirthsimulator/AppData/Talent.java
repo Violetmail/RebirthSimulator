@@ -13,6 +13,10 @@ public class Talent {
     @ColumnInfo(name = "TalentContext")
     public String TalentContext;
 
+    //操作的属性
+    @ColumnInfo(name = "TalentProperty")
+    public String TalentProperty;
+
     //改变数值
     @ColumnInfo(name = "modifyValue")
     public  int modifyValue;

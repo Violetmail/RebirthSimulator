@@ -17,6 +17,10 @@ public interface TalentDao {
     @Query("SELECT * FROM talent")
     List<Talent> getall();
 
+    //查询天赋
+    @Query("SELECT * FROM talent where talentid in(:id)")
+    Talent findbyid(int id);
+
     //插入天赋
     @Insert
     void insertAll(Talent...talents);

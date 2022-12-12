@@ -31,6 +31,7 @@ import com.noob.rebirthsimulator.databinding.FragmentNotificationsBinding;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class NotificationsFragment extends Fragment {
     //绑定控件
@@ -194,6 +195,8 @@ public class NotificationsFragment extends Fragment {
                 holder.branch2.setText(textData.branch2);
                 //不可继续
                 binding.continuebtn.setVisibility(View.INVISIBLE);
+                //获取必要数据
+                int giftwater=userDao.findByName(nowusername).giftwater;
                 //分支一按钮事件
                 holder.branch1.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -202,11 +205,26 @@ public class NotificationsFragment extends Fragment {
                         switch (textData.branch1) {
                             case "外出冒险":
                                 cardPhy = 0;
+                                break;
+                            case "多喝热水":
+                                cardPhy=0;
+                                break;
+                            case "去拍卖会":
+                                userDao.updatagiftwater(nowusername,giftwater+1);
+                                AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
+                                        .setTitle("")//标题
+                                        .setMessage("你获得了一张水晶券！")//内容
+                                        //肯定按钮逻辑
+                                        .setPositiveButton("确认", null)
+                                        .create();
+                                alertDialog.getWindow().setGravity(Gravity.CENTER);
+                                alertDialog.getWindow().setType(WindowManager.LayoutParams.FIRST_APPLICATION_WINDOW);
+                                alertDialog.show();
+                                break;
                         }
                         //显示继续,隐藏另一个按钮
                         binding.continuebtn.setVisibility(View.VISIBLE);
                         holder.branch2.setEnabled(false);
-
                     }
                 });
                 //分支二按钮事件
@@ -217,6 +235,8 @@ public class NotificationsFragment extends Fragment {
                             //根据按钮给予事件
                             case "宅家派":
                                 cardIg = cardIg + 10;
+                            case "花钱治疗":
+                                cardPhy=80;
                         }
                         //显示继续,隐藏另一个按钮
                         binding.continuebtn.setVisibility(View.VISIBLE);
@@ -237,6 +257,8 @@ public class NotificationsFragment extends Fragment {
                     //获得转生碎片
                     int fragments=userDao.findByName(nowusername).fragment;
                     userDao.updatafragment(nowusername,fragments+10);
+                    //清空数据
+                    TextList.clear();
                 }
                 else {
                     //否则显示按钮
@@ -297,12 +319,20 @@ public class NotificationsFragment extends Fragment {
                 nowage=nowage+1;
                 //设置索引
                 int TextIndex=0;
+                List<Integer> list=new ArrayList<Integer>();
                 //根据文本对属性的需要获得相应的索引号
-                for (int i=0;i<rebithTextDao.fingByAge(nowage).size();i++){
-                    if (cardPhy<=rebithTextDao.fingByAge(nowage).get(i).NeddPhy){
-                        TextIndex=i;
+                if (cardPhy==0){
+                    TextIndex=0;
+                }
+                else {
+                    for (int i = 1; i < rebithTextDao.fingByAge(nowage).size(); i++) {
+                        if (cardPhy >= rebithTextDao.fingByAge(nowage).get(i).NeddPhy) {
+                            list.add(i);
+                            TextIndex = list.get(new Random().nextInt(list.size()));
+                        }
                     }
                 }
+
                 //应用索引
                 textData.age = rebithTextDao.fingByAge(nowage).get(TextIndex).age;
                 textData.content = rebithTextDao.fingByAge(nowage).get(TextIndex).context;
@@ -312,8 +342,6 @@ public class NotificationsFragment extends Fragment {
 
                 //刷新适配器
                 rebirthAdapter2.notifyDataSetChanged();
-
-
 
             }
         });
@@ -339,12 +367,17 @@ public class NotificationsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //跳转到人生总结界面
-                startActivity(new Intent(getActivity(), LifeResultActivity.class));
+                //传递数据到人生总结
+                Intent intent=new Intent(getActivity(),LifeResultActivity.class);
+                intent.putExtra("nowcharacter",nowcharacter);
+                intent.putExtra("deathage",deathage);
+                intent.putExtra("deathAp",cardAp);
+                intent.putExtra("deathIg",cardIg);
+                intent.putExtra("deathPhy",cardPhy);
+                intent.putExtra("deathUg",cardUg);
+                startActivity(intent);
             }
         });
-
-
-
 
 
         //角色图片按钮
@@ -361,11 +394,7 @@ public class NotificationsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        //传递数据到人生总结
-        Intent intent=new Intent(getActivity().getApplicationContext(),LifeResultActivity.class);
-        intent.putExtra("deathage",deathage);
-        intent.putExtra("deathAp",cardAp);
-        intent.putExtra("deathPhy",cardPhy);
+
     }
 
     @Override

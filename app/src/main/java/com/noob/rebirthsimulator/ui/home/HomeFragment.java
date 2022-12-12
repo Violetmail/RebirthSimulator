@@ -1,7 +1,5 @@
 package com.noob.rebirthsimulator.ui.home;
 
-import static android.content.Context.MODE_PRIVATE;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,13 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.noob.rebirthsimulator.AppData.Card;
 import com.noob.rebirthsimulator.AppData.User;
@@ -29,7 +25,6 @@ import com.noob.rebirthsimulator.UserCardDao;
 import com.noob.rebirthsimulator.UserDao;
 import com.noob.rebirthsimulator.UserInformation;
 import com.noob.rebirthsimulator.databinding.FragmentHomeBinding;
-import com.noob.rebirthsimulator.MainActivity;
 
 import java.util.List;
 import java.util.Random;
@@ -50,6 +45,12 @@ public class HomeFragment extends Fragment {
     //临时储存数据(未使用)
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
+
+    //抽奖概率
+    int PS;
+    int PA;
+    int PB;
+    int PC;
 
 //生命周期；create
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -84,7 +85,7 @@ public class HomeFragment extends Fragment {
         //显示水晶数量
         binding.water.setText(String.valueOf(userDao.findByName(nowusername).water));
         //显示保底文本
-        binding.textHome.setText("再抽取"+userDao.findByName(nowusername).drawcounter+"次，必出S!");
+        binding.textHome.setText("再抽取"+userDao.findByName(nowusername).drawcounter+"次，必出S级角色卡！");
         //显示碎片数量
         binding.currency1.setText(String.valueOf(userDao.findByName(nowusername).fragment));
         //显示水晶券数量
@@ -96,6 +97,16 @@ public class HomeFragment extends Fragment {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (compoundButton.isChecked()){
                     Toast.makeText(getActivity().getApplicationContext(), "运气提高了！",Toast.LENGTH_SHORT).show();
+                    PS=5;
+                    PA=20;
+                    PB=25;
+                    PC=50;
+                }
+                else {
+                    PS=2;
+                    PA=8;
+                    PB=10;
+                    PC=80;
                 }
             }
         });
@@ -154,7 +165,7 @@ public class HomeFragment extends Fragment {
                 if (water-280>=0) {
                     //抽一张卡
                     Card drawing=new Card();
-                    drawing=getAcard(5,25,50,20);
+                    drawing=getAcard(PS,PA,PB,PC);
                     //更新水晶
                     userDao.updatawater(nowusername,water-280);
                     if (counter == 1) {
@@ -194,7 +205,7 @@ public class HomeFragment extends Fragment {
                     //界面显示新值
                     binding.water.setText(String.valueOf(userDao.findByName(nowusername).water));
                     binding.currency1.setText(String.valueOf(userDao.findByName(nowusername).fragment));
-                    binding.textHome.setText("再抽取"+userDao.findByName(nowusername).drawcounter+"次，必出S!");
+                    binding.textHome.setText("再抽取"+userDao.findByName(nowusername).drawcounter+"次，必出S级角色卡！");
 
                 }
                else {
@@ -222,7 +233,7 @@ public class HomeFragment extends Fragment {
                         binding.getone.callOnClick();
                     }
                     //更新界面
-                    binding.textHome.setText("再抽取"+userDao.findByName(nowusername).drawcounter+"次，必出S!");
+                    binding.textHome.setText("再抽取"+userDao.findByName(nowusername).drawcounter+"次，必出S级角色卡！");
                     binding.water.setText(String.valueOf(userDao.findByName(nowusername).water));
                 }
                 else {
@@ -324,7 +335,7 @@ private int setquality(int rank){
         binding.water.setText(String.valueOf(userDao.findByName(nowusername).water));
         binding.currency1.setText(String.valueOf(userDao.findByName(nowusername).fragment));
         binding.currency2.setText(String.valueOf(userDao.findByName(nowusername).giftwater));
-        binding.textHome.setText("再抽取"+userDao.findByName(nowusername).drawcounter+"次，必出S!");
+        binding.textHome.setText("再抽取"+userDao.findByName(nowusername).drawcounter+"次，必出S级角色卡！");
     }
 
     @Override

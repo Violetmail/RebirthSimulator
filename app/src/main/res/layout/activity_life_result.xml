@@ -7,12 +7,11 @@
     tools:context=".LifeResultActivity">
 
     <Button
-        android:id="@+id/talent"
+        android:id="@+id/talent2"
         android:layout_width="313dp"
         android:layout_height="35dp"
         android:layout_marginTop="48dp"
         android:backgroundTint="#AACCE6"
-        android:text="祖国人（你是个反派，智力永久提高20）"
         android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -124,7 +123,7 @@
         android:id="@+id/talentText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="天赋：你可以选择一个天赋，下辈子可以继承"
+        android:text="天赋：你可以选择一个天赋，下辈子可以继承(可以不选)"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.147"
         app:layout_constraintStart_toStartOf="parent"
@@ -143,7 +142,6 @@
         android:layout_height="35dp"
         android:layout_marginTop="16dp"
         android:backgroundTint="#AACCE6"
-        android:text="祖国人（你是个反派，智力永久提高20）"
         android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"

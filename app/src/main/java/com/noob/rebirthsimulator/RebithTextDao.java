@@ -20,8 +20,8 @@ public interface RebithTextDao {
     List<RebirthText> fingByAge(int AGE);
 
     //获取特定要求的对象
-    @Query("SELECT * FROM rebirthtext WHERE age IN (:AGE) AND character IN(:card)" )
-    List<RebirthText> fingByCardAndAge(int AGE,String card);
+    @Query("SELECT * FROM rebirthtext WHERE age= (:AGE) and NeedAp>=(:ap) and NeedIg>=(:ig) and NeedPhy>=(:phy) and NeedUg>=(:ug)" )
+    List<RebirthText> fingByCondition(int AGE,int ap,int ig,int phy,int ug);
 
 //插入
     @Insert

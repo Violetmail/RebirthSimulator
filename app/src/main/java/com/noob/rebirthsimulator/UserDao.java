@@ -28,6 +28,10 @@ public interface UserDao {
     @Query("UPDATE User SET fragment=:newfragment WHERE username IN (:userNAME)")
     void updatafragment(String userNAME,int newfragment);
 
+//更新用户水晶券数
+    @Query("UPDATE User SET giftwater=:newgiftwater WHERE username IN (:userNAME)")
+    void updatagiftwater(String userNAME,int newgiftwater);
+
 //用用户名返回用户
     @Query("SELECT * FROM user WHERE username in(:username)")
     User findByName(String username);

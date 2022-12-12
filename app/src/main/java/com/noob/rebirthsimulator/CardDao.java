@@ -4,6 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.noob.rebirthsimulator.AppData.Card;
 
@@ -27,6 +28,9 @@ public interface CardDao {
     @Query("SELECT * FROM card WHERE cardStar LIKE :star")
     List<Card> findByStar(int star);
 
+    //更新表
+    @Update
+    void  updatecard(Card...cards);
     //插入新卡片
     @Insert
     void insertAll(Card... cards);
