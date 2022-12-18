@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -162,16 +163,55 @@ public class HomeFragment extends Fragment {
                 //引入抽卡保底数，水晶数，和碎片数。
                 int counter=userDao.findByName(nowusername).drawcounter;
                 int water=userDao.findByName(nowusername).water;
+                //清空十连显示文本
+                for (int i=0;i<10;i++) {
+                    TextView nowTextview;
+                    switch (i) {
+                        case 0:
+                            nowTextview = binding.textView3;
+                            break;
+                        case 1:
+                            nowTextview = binding.textView4;
+                            break;
+                        case 2:
+                            nowTextview = binding.textView5;
+                            break;
+                        case 3:
+                            nowTextview = binding.textView6;
+                            break;
+                        case 4:
+                            nowTextview = binding.textView7;
+                            break;
+                        case 5:
+                            nowTextview = binding.textView8;
+                            break;
+                        case 6:
+                            nowTextview = binding.textView9;
+                            break;
+                        case 7:
+                            nowTextview = binding.textView10;
+                            break;
+                        case 8:
+                            nowTextview = binding.textView11;
+                            break;
+                        case 9:
+                            nowTextview = binding.textView12;
+                            break;
+                        default:
+                            nowTextview = binding.cardresult;
+                    }
+                    nowTextview.setText("");
+                }
+                //抽！
                 if (water-280>=0) {
                     //抽一张卡
-                    Card drawing=new Card();
-                    drawing=getAcard(PS,PA,PB,PC);
+                    Card drawing=getAcard(PS,PA,PB,PC);
                     //更新水晶
                     userDao.updatawater(nowusername,water-280);
                     if (counter == 1) {
-                        drawing=getuppercard();
-                        binding.cardresult.setText(drawing.cardname);
-                        binding.cardresult.setTextColor(drawing.cardStar);
+                        drawing=getScard();
+                        //显示结果
+                        setresultText(drawing,binding.cardresult);
                         //更新保底数
                         userDao.updatadrawcounter(nowusername,100);
                     }
@@ -184,27 +224,14 @@ public class HomeFragment extends Fragment {
                             //更新保底数
                             userDao.updatadrawcounter(nowusername,counter-1);
                         }
-
                         //显示抽卡结果
-                        binding.cardresult.setText(drawing.cardname);
-                        binding.cardresult.setTextColor(setquality(drawing.cardStar));
+                        setresultText(drawing,binding.cardresult);
 
-                        //用户卡列表
-                        List<UserCard> usercard=userCardDao.findByName(nowusername);
-                        //抽到的卡加入用户卡
-                        UserCard userCard0 = new UserCard();
-                        userCard0.username = nowusername;
-                        userCard0.cardname = drawing.cardname;
-                        userCard0.cardstar = drawing.cardStar;
-                        userCard0.cardvalue= drawing.cardvalue;
-                        //如果卡不在用户卡表中则插入
-                        if (userCardDao.findByUserAndName(nowusername,userCard0.cardname)==null) {
-                            userCardDao.insertAll(userCard0);
-                        }
+                        //未拥有的卡加入用户表
+                        card2user(drawing);
                     }
                     //界面显示新值
                     binding.water.setText(String.valueOf(userDao.findByName(nowusername).water));
-                    binding.currency1.setText(String.valueOf(userDao.findByName(nowusername).fragment));
                     binding.textHome.setText("再抽取"+userDao.findByName(nowusername).drawcounter+"次，必出S级角色卡！");
 
                 }
@@ -225,16 +252,81 @@ public class HomeFragment extends Fragment {
         binding.getten.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int counter10=userDao.findByName(nowusername).drawcounter;
+                int counter10;
                 int water10=userDao.findByName(nowusername).water;
+                TextView nowTextview;
+                //清除单抽显示
+                binding.cardresult.setText("");
+                //循环十次
                 if (water10>=2800) {
                     //相当于点击十次 单抽
                     for (int i=0;i<10;i++){
-                        binding.getone.callOnClick();
+                        counter10=userDao.findByName(nowusername).drawcounter;
+                        water10=userDao.findByName(nowusername).water;
+                        switch (i) {
+                            case 0:
+                                nowTextview=binding.textView3;
+                                break;
+                            case 1:
+                                nowTextview=binding.textView4;
+                                break;
+                            case 2:
+                                nowTextview=binding.textView5;
+                                break;
+                            case 3:
+                                nowTextview=binding.textView6;
+                                break;
+                            case 4:
+                                nowTextview=binding.textView7;
+                                break;
+                            case 5:
+                                nowTextview=binding.textView8;
+                                break;
+                            case 6:
+                                nowTextview=binding.textView9;
+                                break;
+                            case 7:
+                                nowTextview=binding.textView10;
+                                break;
+                            case 8:
+                                nowTextview=binding.textView11;
+                                break;
+                            case 9:
+                                nowTextview=binding.textView12;
+                                break;
+                            default:
+                                nowTextview=binding.cardresult;
+                        }
+                        //抽一张卡
+                        Card drawing=getAcard(PS,PA,PB,PC);
+                        //更新水晶
+                        userDao.updatawater(nowusername,water10-280);
+                        if (counter10== 1) {
+                            drawing=getScard();
+                            //结果
+                            setresultText(drawing,nowTextview);
+                            //更新保底数
+                            userDao.updatadrawcounter(nowusername,100);
+                        }
+                        else {
+                            if (drawing.cardStar == 4) {
+                                //更新保底数
+                                userDao.updatadrawcounter(nowusername,100);
+                            }
+                            else {
+                                //更新保底数
+                                userDao.updatadrawcounter(nowusername,counter10-1);
+                            }
+                            //显示抽卡结果
+                            setresultText(drawing,nowTextview);
+
+                            //未拥有的卡加入用户表
+                            card2user(drawing);
+                        }
                     }
-                    //更新界面
-                    binding.textHome.setText("再抽取"+userDao.findByName(nowusername).drawcounter+"次，必出S级角色卡！");
+                    //界面显示新值
                     binding.water.setText(String.valueOf(userDao.findByName(nowusername).water));
+                    binding.textHome.setText("再抽取"+userDao.findByName(nowusername).drawcounter+"次，必出S级角色卡！");
                 }
                 else {
                     //抽卡失败,弹出对话框
@@ -294,14 +386,34 @@ public class HomeFragment extends Fragment {
         }
     }
 
-//强制获得最强卡
-private Card getuppercard(){
+//强制获得S卡
+private Card getScard(){
     //获得随机数
     Random randindex=new Random();
     int index=randindex.nextInt(cardDao.findByStar(4).size());
     //返回随机的一个卡名
     return cardDao.findByStar(4).get(index);
 }
+
+//显示卡片数据
+    private void setresultText(Card card,TextView textView){
+        textView.setText(card.cardname);
+        textView.setTextColor(setquality(card.cardStar));
+    }
+
+//抽到的卡加入用户表
+    private void card2user(Card drawing){
+        //抽到的卡加入用户卡
+        UserCard userCard0 = new UserCard();
+        userCard0.username = nowusername;
+        userCard0.cardname = drawing.cardname;
+        userCard0.cardstar = drawing.cardStar;
+        userCard0.cardvalue= drawing.cardvalue;
+        //如果卡不在用户卡表中则插入
+        if (userCardDao.findByUserAndName(nowusername,userCard0.cardname)==null) {
+            userCardDao.insertAll(userCard0);
+        }
+    }
 
 //根据品质rank设置卡片颜色属性
 private int setquality(int rank){

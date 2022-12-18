@@ -300,6 +300,11 @@ public class NotificationsFragment extends Fragment {
 
         //绑定适配器1,显示角色选择
         binding.rebirthlist.setAdapter(rebirthAdapter1);
+        //默认显示底部数据
+        binding.rebirthlist.scrollToPosition(rebirthAdapter1.getItemCount()-1);
+
+
+
         //设置布局
         GridLayoutManager gridLayoutManager = new GridLayoutManager(
                 getActivity().getApplicationContext(), 1, GridLayoutManager.VERTICAL, false);
@@ -332,7 +337,6 @@ public class NotificationsFragment extends Fragment {
                         }
                     }
                 }
-
                 //应用索引
                 textData.age = rebithTextDao.fingByAge(nowage).get(TextIndex).age;
                 textData.content = rebithTextDao.fingByAge(nowage).get(TextIndex).context;
@@ -340,8 +344,10 @@ public class NotificationsFragment extends Fragment {
                 textData.branch2 = rebithTextDao.fingByAge(nowage).get(TextIndex).branchtext2;
                 TextList.add(textData);
 
+
                 //刷新适配器
                 rebirthAdapter2.notifyDataSetChanged();
+
 
             }
         });

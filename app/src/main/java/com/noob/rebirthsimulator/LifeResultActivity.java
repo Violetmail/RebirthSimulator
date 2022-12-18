@@ -8,6 +8,7 @@ import android.app.Notification;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.noob.rebirthsimulator.AppData.AppDatabase;
 import com.noob.rebirthsimulator.AppData.Card;
@@ -128,6 +129,8 @@ public class LifeResultActivity extends AppCompatActivity {
                         break;
                 }
                 cardDao.updatecard(card);
+                //提示文本
+                Toast.makeText(LifeResultActivity.this, "天赋加成成功，可进图鉴查看！",Toast.LENGTH_SHORT).show();
                 //改变按钮可见
                 binding.talent1.setEnabled(false);
                 binding.talent2.setVisibility(View.INVISIBLE);
@@ -157,6 +160,8 @@ public class LifeResultActivity extends AppCompatActivity {
                         break;
                 }
                 cardDao.updatecard(card);
+                //提示文本
+                Toast.makeText(LifeResultActivity.this, "天赋加成成功，可进图鉴查看！",Toast.LENGTH_SHORT).show();
                 //改变按钮可见
                 binding.talent2.setEnabled(false);
                 binding.talent1.setVisibility(View.INVISIBLE);
@@ -167,7 +172,7 @@ public class LifeResultActivity extends AppCompatActivity {
         binding.rebirthagain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(LifeResultActivity.this, Notification.class));
+                startActivity(new Intent(LifeResultActivity.this, MainActivity.class));
             }
         });
 
