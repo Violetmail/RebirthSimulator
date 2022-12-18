@@ -139,6 +139,17 @@ public class MainActivity extends AppCompatActivity {
 
         //数据库判空，并插入转生文本数据
         if (rebithTextDao.getAll().isEmpty()) {
+            RebirthText rebithText1_0 = new RebirthText();
+            rebithText1_0.age = 1;
+            rebithText1_0.context = "1岁，你胎死腹中，你死了";
+            rebithText1_0.branchtext1 = "";
+            rebithText1_0.branchtext2 = "";
+            rebithText1_0.NeddPhy = 0;
+            rebithText1_0.NeddUg = 0;
+            rebithText1_0.NeddAp = 0;
+            rebithText1_0.NeddIg = 0;
+            rebithTextDao.insertAll(rebithText1_0);
+
             RebirthText rebithText1 = new RebirthText();
             rebithText1.age = 1;
             rebithText1.context = "1岁，你出生了，是个男孩";
@@ -160,6 +171,17 @@ public class MainActivity extends AppCompatActivity {
             rebithText11.NeddAp = 0;
             rebithText11.NeddIg = 0;
             rebithTextDao.insertAll(rebithText11);
+
+            RebirthText rebithText2_0 = new RebirthText();
+            rebithText2_0.age = 2;
+            rebithText2_0.context = "2岁，你不幸早夭，你死了";
+            rebithText2_0.branchtext1 = "";
+            rebithText2_0.branchtext2 = "";
+            rebithText2_0.NeddPhy = 0;
+            rebithText2_0.NeddUg = 0;
+            rebithText2_0.NeddAp = 0;
+            rebithText2_0.NeddIg = 0;
+            rebithTextDao.insertAll(rebithText2_0);
 
             RebirthText rebithText2 = new RebirthText();
             rebithText2.age = 2;
@@ -183,6 +205,17 @@ public class MainActivity extends AppCompatActivity {
             rebithText21.NeddIg = 0;
             rebithTextDao.insertAll(rebithText21);
 
+            RebirthText rebithText3_0 = new RebirthText();
+            rebithText3_0.age = 3;
+            rebithText3_0.context = "3岁，你得了肺炎，你死了";
+            rebithText3_0.branchtext1 = "";
+            rebithText3_0.branchtext2 = "";
+            rebithText3_0.NeddPhy = 0;
+            rebithText3_0.NeddUg = 0;
+            rebithText3_0.NeddAp = 0;
+            rebithText3_0.NeddIg = 0;
+            rebithTextDao.insertAll(rebithText3_0);
+
             RebirthText rebithText3 = new RebirthText();
             rebithText3.age = 3;
             rebithText3.context = "3岁，你的父母对你呵护尤佳";
@@ -193,6 +226,17 @@ public class MainActivity extends AppCompatActivity {
             rebithText3.NeddAp = 0;
             rebithText3.NeddIg = 0;
             rebithTextDao.insertAll(rebithText3);
+
+            RebirthText rebithText3_1 = new RebirthText();
+            rebithText3_1.age = 3;
+            rebithText3_1.context = "3岁，你家杀了唯一的一头🐖";
+            rebithText3_1.branchtext1 = "";
+            rebithText3_1.branchtext2 = "";
+            rebithText3_1.NeddPhy = 0;
+            rebithText3_1.NeddUg = 0;
+            rebithText3_1.NeddAp = 0;
+            rebithText3_1.NeddIg = 0;
+            rebithTextDao.insertAll(rebithText3_1);
 
             RebirthText rebithText4_1 = new RebirthText();
             rebithText4_1.age = 4;
@@ -281,6 +325,17 @@ public class MainActivity extends AppCompatActivity {
             rebithText9_1.NeddAp = 0;
             rebithText9_1.NeddIg = 0;
             rebithTextDao.insertAll(rebithText9_1);
+
+            RebirthText rebithText9_2 = new RebirthText();
+            rebithText9_2.age = 9;
+            rebithText9_2.context = "9岁，你被老师要求做在讲台两边";
+            rebithText9_2.branchtext1 = "";
+            rebithText9_2.branchtext2 = "";
+            rebithText9_2.NeddPhy = 20;
+            rebithText9_2.NeddUg = 0;
+            rebithText9_2.NeddAp = 0;
+            rebithText9_2.NeddIg = 0;
+            rebithTextDao.insertAll(rebithText9_2);
 
             RebirthText rebithText10_1 = new RebirthText();
             rebithText10_1.age = 10;

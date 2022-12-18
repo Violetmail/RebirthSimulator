@@ -212,6 +212,8 @@ public class HomeFragment extends Fragment {
                         drawing=getScard();
                         //显示结果
                         setresultText(drawing,binding.cardresult);
+                        //未拥有的卡加入用户表
+                        card2user(drawing);
                         //更新保底数
                         userDao.updatadrawcounter(nowusername,100);
                     }
@@ -305,6 +307,8 @@ public class HomeFragment extends Fragment {
                             drawing=getScard();
                             //结果
                             setresultText(drawing,nowTextview);
+                            //未拥有的卡加入用户表
+                            card2user(drawing);
                             //更新保底数
                             userDao.updatadrawcounter(nowusername,100);
                         }

@@ -202,26 +202,7 @@ public class NotificationsFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         //根据按钮给予事件
-                        switch (textData.branch1) {
-                            case "外出冒险":
-                                cardPhy = 0;
-                                break;
-                            case "多喝热水":
-                                cardPhy=0;
-                                break;
-                            case "去拍卖会":
-                                userDao.updatagiftwater(nowusername,giftwater+1);
-                                AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
-                                        .setTitle("")//标题
-                                        .setMessage("你获得了一张水晶券！")//内容
-                                        //肯定按钮逻辑
-                                        .setPositiveButton("确认", null)
-                                        .create();
-                                alertDialog.getWindow().setGravity(Gravity.CENTER);
-                                alertDialog.getWindow().setType(WindowManager.LayoutParams.FIRST_APPLICATION_WINDOW);
-                                alertDialog.show();
-                                break;
-                        }
+                        ApplyBranch(textData.branch1,giftwater);
                         //显示继续,隐藏另一个按钮
                         binding.continuebtn.setVisibility(View.VISIBLE);
                         holder.branch2.setEnabled(false);
@@ -231,13 +212,7 @@ public class NotificationsFragment extends Fragment {
                 holder.branch2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        switch (textData.branch2) {
-                            //根据按钮给予事件
-                            case "宅家派":
-                                cardIg = cardIg + 10;
-                            case "花钱治疗":
-                                cardPhy=80;
-                        }
+                        ApplyBranch(textData.branch2,giftwater);
                         //显示继续,隐藏另一个按钮
                         binding.continuebtn.setVisibility(View.VISIBLE);
                         holder.branch1.setEnabled(false);
@@ -324,7 +299,7 @@ public class NotificationsFragment extends Fragment {
                 nowage=nowage+1;
                 //设置索引
                 int TextIndex=0;
-                List<Integer> list=new ArrayList<Integer>();
+                List<Integer> list=new ArrayList<>();
                 //根据文本对属性的需要获得相应的索引号
                 if (cardPhy==0){
                     TextIndex=0;
@@ -347,7 +322,7 @@ public class NotificationsFragment extends Fragment {
 
                 //刷新适配器
                 rebirthAdapter2.notifyDataSetChanged();
-
+                //binding.rebirthlist.scrollToPosition(rebirthAdapter2.getItemCount()-1);
 
             }
         });
@@ -385,7 +360,6 @@ public class NotificationsFragment extends Fragment {
             }
         });
 
-
         //角色图片按钮
         binding.characterImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -393,8 +367,40 @@ public class NotificationsFragment extends Fragment {
             }
         });
 
+
         View root = binding.getRoot();
         return root;
+    }
+
+    //分支按钮函数
+    private  void ApplyBranch(String branch,int giftwater){
+        switch (branch) {
+            //根据按钮给予事件
+            case "宅家派":
+                cardIg = cardIg + 10;
+                break;
+            case "花钱治疗":
+                cardPhy=80;
+                break;
+            case "外出冒险":
+                cardPhy = 0;
+                break;
+            case "多喝热水":
+                cardPhy=0;
+                break;
+            case "去拍卖会":
+                userDao.updatagiftwater(nowusername,giftwater+1);
+                AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
+                        .setTitle("")//标题
+                        .setMessage("你获得了一张水晶券！")//内容
+                        //肯定按钮逻辑
+                        .setPositiveButton("确认", null)
+                        .create();
+                alertDialog.getWindow().setGravity(Gravity.CENTER);
+                alertDialog.getWindow().setType(WindowManager.LayoutParams.FIRST_APPLICATION_WINDOW);
+                alertDialog.show();
+                break;
+        }
     }
 
     @Override
