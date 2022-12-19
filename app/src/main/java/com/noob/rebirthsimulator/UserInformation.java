@@ -52,6 +52,8 @@ public String getusername(){
                     loginbutton.setVisibility(View.GONE);
                     registerbutton.setVisibility(View.GONE);
                     name.setText(getusername());
+                    //登陆后不可输入用户名
+                    name.setEnabled(false);
                     //登陆
                     userDao.updatelogin(true,getusername());
                     Toast.makeText(UserInformation.this, "欢迎！"+getusername()+"!",Toast.LENGTH_SHORT).show();
@@ -89,6 +91,8 @@ public String getusername(){
                 loginbutton.setVisibility(View.VISIBLE);
                 registerbutton.setVisibility(View.VISIBLE);
                 logoutbutton.setVisibility(View.GONE);
+                //登陆按钮可用
+                name.setEnabled(true);
                 //注销掉账号
                 userDao.updatelogin(false,getusername());
                 //设置用户名栏为空
@@ -107,6 +111,8 @@ public String getusername(){
             logoutbutton.setVisibility(View.VISIBLE);
             loginbutton.setVisibility(View.GONE);
             registerbutton.setVisibility(View.GONE);
+            //登陆后不可输入用户名
+            name.setEnabled(false);
             //将用户名设置为登陆用户
             name.setText(userDao.getloginuser(true).username);
         }

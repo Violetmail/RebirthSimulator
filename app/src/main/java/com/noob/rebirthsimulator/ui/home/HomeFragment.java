@@ -448,6 +448,7 @@ private int setquality(int rank){
     public void onResume() {
         super.onResume();
         //显示变动的数据
+        nowusername=userDao.getloginuser(true).username;
         binding.water.setText(String.valueOf(userDao.findByName(nowusername).water));
         binding.currency1.setText(String.valueOf(userDao.findByName(nowusername).fragment));
         binding.currency2.setText(String.valueOf(userDao.findByName(nowusername).giftwater));
